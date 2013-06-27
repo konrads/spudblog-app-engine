@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <!-- FIXME: ensure browser back button causes a refresh -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, post-check=0, pre-check=0"/>
+    <title>Your blogs</title>
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/spudblog.css" rel="stylesheet">
+
+    <script>
+    // server side population
+    // server side population
+    blog_summaries = [
+    {% for b in blogs %}
+        {
+            id: {{ b.id }},
+            title: "{{ b.title|escapejs }}",
+        },
+    {% endfor %}
+    ];
+    user_name = "{{ user_name }}";
+    </script>
+    <script src="/static/js/lib/underscore.js"></script>
+    <script src="/static/js/lib/angular.js"></script>
+    <script src="/static/js/lib/angular-resource.js"></script>
+    <script src="/static/js/spudblog/services.js"></script>
+    <script src="/static/js/spudblog/app.js"></script>
+</head>
+
+<body ng-app="blogsApp">
+    <script type="text/ng-template" id="blog-edit.tpl.html">
+        <!-- FIXME: not protecting against XSFR, need to implement:
+             http://stackoverflow.com/questions/14109927/angular-js-verify-csrf-token-in-post-request -->
+        <div class="container-fluid blog rounded-corners [[blog.background]]">
+            <div class="row-fluid">
+                <div class="span2">Blog title:</div>
+                <div class="span8"><input type="text" ng-disabled="blogState.editingDisabled(blog)" ng-model="blog.title"/></div>
+            </div>
+            <div class="row-fluid">
+                <div class="span2">Background:</div><div class="span8">
+                <select ng-model="blog.background" ng-disabled="blogState.editingDisabled(blog)" ng-options="b.class as b.name for b in backgrounds"></select></div>
+            </div>
+            <div class="row-fluid">
+                <div class="form-horizontal pull-right">
+                    <button class="btn" ng-disabled="blogState.actionDisabled(blog)" ng-click="blogState.doBlogAction(blog)">[[blogState.actionName(blog)]]</button>
+                    <button class="btn" ng-click="blogState.deleteBlog(blog)">Delete</button>
+                </div>
+            </div>
+            <!-- Posts -->
+            <div ng-class="row-fluid" ng-repeat="p in blog.posts | orderBy:date_created">
+                <hr/>
+                <div class="row-fluid">
+                    <div class="span2">Post title:</div>
+                    <div class="span4"><input type="text" placeholder="New post title..." ng-disabled="blogState.editingDisabled(p)" ng-model="p.title"/></div>
+                    <div ng-show="p.date_created" class="span3 offset2">@ [[p.date_created]]</div>
+
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">Post content:</div>
+                    <div class="span8"><textarea ng-disabled="blogState.editingDisabled(p)" placeholder="New post content..." class="post-content" ng-model="p.content"></textarea></div>
+                </div>
+                <div class="row-fluid">
+                    <div class="form-horizontal pull-right">
+                        <button class="btn" ng-disabled="blogState.actionDisabled(p)" ng-click="blogState.doPostAction(p)">[[blogState.actionName(p)]]</button>
+                        <button class="btn" ng-click="blogState.deletePost(p)">Delete</button>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row-fluid">
+                <div class="span3"><button class="btn" ng-disabled="blogState.addNewDisabled()" ng-click="blogState.addPost()">New Post</button></div>
+            </div>
+        </div>
+    </script>
+
+    <div class="container-fluid max-height global-padding">
+        <div class="row-fluid">
+            <div class="span5 offset3" ng-controller="HeaderCtrl">
+                <h2>[[ user_name ]]'s blogs</h2>
+            </div>
+            <div class="span1 offset2">
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+        <div class="row-fluid max-height">
+            <div class="span3">
+                <div ng-controller="BlogSummariesCtrl">
+                    <div class="well" ng-show="blog_summaries.length">
+                        <ul class="nav nav-list" ng-repeat="b in blog_summaries">
+                            <!-- getActiveClass() - bit of magic to set class='active' or '' for navbar -->
+                            <li ng-class="{active:isActive('/blog-edit/'+b.id)}"><a href="#/blog-edit/[[b.id]]">[[b.title]]</a></li>
+                        </ul>
+                    </div>
+                    <h4 ng-show="!blog_summaries.length">No blogs yet...</h4>
+                    <!-- FIXME: button needs better localization -->
+                    </br></br>
+                    <button class="btn btn-primary" ng-click="newBlog()">New Blog</button>
+                </div>
+            </div>
+            <div class="span8">
+                <div ng-controller="BlogEditCtrl">
+                    <div ng-view></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

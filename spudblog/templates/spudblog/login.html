@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>All Spud blogs</title>
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/spudblog.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container login-container">
+        <div class="row login rounded-corners">
+        <h3>Login to Spudblog</h3>
+        {% if form.errors %}
+            <div class="alert">Your username and password didn't match. Please try again.</div>
+        {% endif %}
+        <form method="post" action="{% url login %}">
+        {% csrf_token %}
+        <div class="control-group ">
+         {{ form.username.label_tag }}
+          <div class="controls">
+            {{ form.username }}
+          </div>
+        </div>
+        <div class="control-group ">
+          {{ form.password.label_tag }}
+          <div class="controls">
+            {{ form.password }}
+          </div>
+        </div>
+        <input type="submit" value="login" class="btn primary"/>
+        <input type="hidden" name="next" value="{{ next }}" />
+      </form>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>All Spud blogs</title>
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/spudblog.css" rel="stylesheet">
+
+    <script>
+    // server side population
+    blog_summaries = [
+    {% for b in blogs %}
+        {
+            id: {{ b.id }},
+            title: "{{ b.title|escapejs }}",
+        },
+    {% endfor %}
+    ];
+    </script>
+    <script src="/static/js/lib/angular.js"></script>
+    <script src="/static/js/lib/angular-resource.js"></script>
+    <script src="/static/js/spudblog/services.js"></script>
+    <script src="/static/js/spudblog/app.js"></script>
+</head>
+
+<body ng-app="blogsApp">
+    <script type="text/ng-template" id="blog-view.tpl.html">
+        <div class="container-fluid blog rounded-corners [[blog.background]]">
+            <h4 class="row blog-title">[[blog.title]]</h4>
+            <div ng-class="row" ng-repeat="p in blog.posts">
+                <hr/>
+                <u class="post-title">[[p.title]] @ [[p.date_created]]</u>
+                <div class="post-content">[[p.content]]</div>
+            </div>
+        </div>
+    </script>
+
+    <div class="container-fluid max-height global-padding">
+        <div class="row-fluid">
+            <div class="span5 offset3">
+                <h2>Blogs Explorer</h2>
+            </div>
+        </div>
+        <div class="row-fluid max-height">
+            <div class="span3 well">
+                <div ng-controller="BlogSummariesCtrl">
+                    <ul class="nav nav-list" ng-repeat="b in blog_summaries">
+                        <!-- getActiveClass() - bit of magic to set class='active' or '' for navbar -->
+                        <li ng-class="{active:isActive('/blog-view/'+b.id)}"><a href="#/blog-view/[[b.id]]">[[b.title]]</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="span8">
+                <div ng-controller="BlogViewCtrl">
+                    <div ng-view></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
