@@ -68,7 +68,7 @@ python manage.py deploy
 python manage.py remote createsuperuser
 ```
 
-The app has been deployed to Appspot [here](http://spudblog-ks.appspot.com/)
+The app has been deployed to Appspot [here](http://spudblog-ks.appspot.com/).
 
 
 Testing
