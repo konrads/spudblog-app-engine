@@ -35,14 +35,21 @@ export CHROME_BIN=/Applications/MyApps/Google\ Chrome.app/Contents/MacOS/Google\
 Architecture
 ------------
 
-This is a 'single page' application, driven by ajax requests.  UI is decoupled from the server side
+This is a 'single page' application, driven by ajax REST requests.  UI is decoupled from the server side
 and is responsible for its own rendering.  Django's contributions consist of:
 
 * Login page - utilizing `django.contrib.admin`
 * model data population for angularjs
 
-The aim was to achieve uniformity of rendering, as opposed to common approach of partially rendering
+The aim was to achieve uniformity of rendering (via javascript), as opposed to common approach of partially rendering
 in Django templates, partially via javascript.
+
+This is the REST api provided:
+
+* /api/all - GETs all users, their blogs and posts
+* /api/full-blog/<blog_id> - GETs blog and its posts
+* /api/blog/<blog_id> - POSTs/PUTs/DELETEs blog.  Requires a session (blog author).  For POST, /<blog_id> is not required
+* /api/post/<post_id> - POSTs/PUTs/DELETEs post.  Requires a session (parent blog author).  For POST, /<post_id> is not required
 
 
 To run
