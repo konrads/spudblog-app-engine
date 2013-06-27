@@ -35,21 +35,35 @@ export CHROME_BIN=/Applications/MyApps/Google\ Chrome.app/Contents/MacOS/Google\
 Architecture
 ------------
 
-This is a 'single page' application, driven by ajax REST requests.  UI is decoupled from the server side
-and is responsible for its own rendering.  Django's contributions consist of:
+This is a 3 tier application consisting of:
+
+* Angularjs front end
+* Django backend serving REST request to Angularjs
+* Google app engine deployment, utilizing Datastore persistence
+
+The UI is a 'single page' application, driven by ajax REST requests.  It is decoupled from the server side
+and hence, responsible for its own rendering.  Django's contribution consist of:
 
 * Login page - utilizing `django.contrib.admin`
-* model data population for angularjs
+* model data population for angularjs (but not rendering)
 
 The aim was to achieve uniformity of rendering (via javascript), as opposed to common approach of partially rendering
 in Django templates, partially via javascript.
 
-This is the REST api provided:
+Django serves up prepopulated html pages:
 
+* / - login page
+* /blog-explorer - unauthenticated read only list of all blogs
+* /my-blogs - authenticated list of user's blogs/posts
+
+Additionally, there's REST api:
 * /api/all - GETs all users, their blogs and posts
 * /api/full-blog/<blog_id> - GETs blog and its posts
-* /api/blog/<blog_id> - POSTs/PUTs/DELETEs blog.  Requires a session (blog author).  For POST, /<blog_id> is not required
-* /api/post/<post_id> - POSTs/PUTs/DELETEs post.  Requires a session (parent blog author).  For POST, /<post_id> is not required
+* /api/blog/<blog_id> - POSTs/PUTs/DELETEs blog.  Requires authentication (session cookie).  For POST, /<blog_id> is not required
+* /api/post/<post_id> - POSTs/PUTs/DELETEs post.  Requires authentication (session cookie).  For POST, /<post_id> is not required
+
+For persistence, Datastore is mapped via models of [djangoappengine](https://github.com/django-nonrel/djangoappengine).  This mapping
+is Django friendly and works within /admin interface.
 
 
 To run
