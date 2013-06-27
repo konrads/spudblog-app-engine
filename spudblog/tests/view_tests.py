@@ -9,7 +9,7 @@ import json
 from django.test import TestCase
 from mock import Mock
 from django.test.client import Client
-from django.http import HttpResponse, Http404, HttpResponseNotAllowed, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden
 from django.contrib.auth.models import User
 import spudblog.views as views
 from spudblog.models import Blog, Post
@@ -18,22 +18,26 @@ from spudblog.models import Blog, Post
 def _request(http_method, needs_login):
     class User(object):
         is_authenticated = Mock(return_value=needs_login)
+
     class Request(object):
         user = User()
         method = http_method
     return Request()
 
+
 @views.api_call()
 def get_no_login(request):
-    return { 'a': 1 }
+    return {'a': 1}
+
 
 @views.api_call(needs_login=True)
 def get_need_login(request):
-    return { 'a': 1 }
+    return {'a': 1}
+
 
 @views.api_call(methods=['POST'])
 def post_no_login(request):
-    return { 'a': 1 }
+    return {'a': 1}
 
 
 class ApiCallDecoratorTest(TestCase):
@@ -118,4 +122,3 @@ class UIViewTest(BaseTestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals('Writing spudblog', response.context.get('blogs')[0].title)
         self.assertEquals('Deploying spudblog', response.context.get('blogs')[1].title)
-

@@ -5,7 +5,7 @@ UI views have no prefix, api calls are prefixed with 'api'
 
 from functools import wraps
 from django.shortcuts import render
-from django.http import HttpResponse, Http404, HttpResponseNotAllowed, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.views import login as django_login
 from django.contrib.auth.decorators import login_required
@@ -24,20 +24,20 @@ def api_call(methods=None, needs_login=False):
     """
     if not methods:
         methods = ['GET']
+
     def decorator(f):
-    	@wraps(f)
+        @wraps(f)
         def wrapper(request, *args, **kwds):
             if needs_login and not request.user.is_authenticated():
                 return HttpResponseForbidden('Unauthorized/timed out user')
             if request.method not in methods:
-        	    return HttpResponseNotAllowed(methods)
+                return HttpResponseNotAllowed(methods)
             res = None
             try:
                 res = f(request, *args, **kwds)
             except KeyError:
                 pass
             if not res:
-                # raise Http404  # sends through error body
                 return HttpResponseNotFound('Resource not found')
             return HttpResponse(json.dumps(res, indent=4), mimetype='application/json')
         # do not need csfr for REST api...?
@@ -50,8 +50,10 @@ def logout(request):
     django_logout(request)
     return HttpResponseRedirect('/')
 
+
 def blog_explorer(request):
     return render(request, 'spudblog/blog_explorer.html', {'blogs': db.get_blogs()})
+
 
 @login_required
 def my_blogs(request):
@@ -66,6 +68,7 @@ def my_blogs(request):
 def all(request):
     """Debug api call, lists all users, their blogs and posts."""
     return db.all_as_json()
+
 
 @api_call()
 def full_blog(request, blog_id):
@@ -89,6 +92,7 @@ def blog(request, blog_id):
     elif request.method == 'DELETE':
         blog_id = long(blog_id)
         return db.del_blog(blog_id)
+
 
 @api_call(methods=['POST', 'PUT', 'DELETE'], needs_login=True)
 def post(request, post_id):

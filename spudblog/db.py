@@ -21,18 +21,21 @@ def all_as_json():
     users = []
     for u in User.objects.order_by('username'):
         blogs = [b.as_json() for b in u.blog_set.order_by('date_created')]
-        users.append({ 'id': u.id, 'username': u.username, 'blogs': blogs})
+        users.append({'id': u.id, 'username': u.username, 'blogs': blogs})
     return users
+
 
 def get_full_blog(blog_id):
     """Gets full blog, with title, id, posts."""
     return Blog.objects.get(id=blog_id)
+
 
 ### Blog API
 def create_blog(user_id, blog):
     new_blog = Blog(author_id=user_id, title=blog['title'], background=blog['background'])
     new_blog.save()
     return new_blog
+
 
 def update_blog(blog):
     updated_blog = Blog.objects.get(id=blog['id'])
@@ -43,19 +46,22 @@ def update_blog(blog):
     updated_blog.save()
     return updated_blog
 
+
 def del_blog(blog_id):
     deleted_blog = Blog.objects.get(id=blog_id)
     # need to delete posts manually
     for p in deleted_blog.post_set.all():
         p.delete()
     deleted_blog.delete()
-    return { 'id': blog_id }
+    return {'id': blog_id}
+
 
 ### Post API
 def create_post(blog_id, post):
     new_post = Post(blog_id=blog_id, title=post['title'], content=post['content'])
     new_post.save()
     return new_post
+
 
 def update_post(post):
     updated_post = Post.objects.get(id=post['id'])
@@ -66,7 +72,8 @@ def update_post(post):
     updated_post.save()
     return updated_post
 
+
 def del_post(post_id):
     deleted_post = Post.objects.get(id=post_id)
     deleted_post.delete()
-    return { 'id': post_id }
+    return {'id': post_id}
