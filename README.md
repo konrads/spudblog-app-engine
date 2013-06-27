@@ -6,6 +6,7 @@ A simple blogging application that serves as a playground for technologies:
 * Django ( [djangoappengine](https://github.com/django-nonrel/djangoappengine) variety )
 * Google App Engine (persisting via Datastore)
 * Angularjs
+* Bootstrap
 * Jasmine/Karma for JS testing
 
 
