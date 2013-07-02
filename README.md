@@ -26,9 +26,9 @@ For Javascript testing, I've installed karma and jasmine-node via npm:
 npm install karma jasmine-node
 ```
 
-You might need to tweak karma, I had to link the `karma` executable and setup `CHROME_BIN`:
+Karma install might need tweaking, I had to link the `karma` executable and setup `CHROME_BIN`:
 ```bash
-ln node_modules/karma/bin/karma karma
+ln -s node_modules/karma/bin/karma karma
 export CHROME_BIN=/Applications/MyApps/Google\ Chrome.app/Contents/MacOS/Google\ Chrome
 ```
 
@@ -115,3 +115,10 @@ onto every response.
 
 Ajax error handling is simplistic, prompting an alert box with the error message, followed by the
 reload of the `my-blogs` page - this could result with issues if the `my-blogs` page has errors.
+
+Django lacks support for REST PATCH, which suits this app better than PUT.
+[django-rest-framework](http://django-rest-framework.org/) could be of help here,
+however it's been discounted to minimize the bloat of App Engine unsupported libraries.
+
+REST versioning was abandoned, possible approach described [here](http://blog.steveklabnik.com/posts/2011-07-03-nobody-understands-rest-or-http#i_want_my_api_to_be_versioned).  This would involve setting content-type to "application/vnd.spudblog-v1+json"
+in both Django views and Angularjs's REST mechanism.
