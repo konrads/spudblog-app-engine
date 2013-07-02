@@ -5,7 +5,9 @@ UI views have no prefix, api calls are prefixed with 'api'
 
 from functools import wraps
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
+from django.http import (HttpResponse, HttpResponseNotAllowed,
+                         HttpResponseRedirect, HttpResponseForbidden,
+                         HttpResponseNotFound)
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.views import login as django_login
 from django.contrib.auth.decorators import login_required
@@ -40,7 +42,9 @@ def api_call(methods=None, needs_login=False):
                 pass
             if not res:
                 return HttpResponseNotFound('Resource not found')
-            return HttpResponse(json.dumps(res, indent=4), mimetype='application/json')
+            return HttpResponse(
+                json.dumps(res, indent=4),
+                mimetype='application/json')
         # do not need csfr for REST api...?
         return csrf_exempt(wrapper)
     return decorator
@@ -53,7 +57,10 @@ def logout(request):
 
 
 def blog_explorer(request):
-    return render(request, 'spudblog/blog_explorer.html', {'blogs': db.get_blogs()})
+    return render(
+        request,
+        'spudblog/blog_explorer.html',
+        {'blogs': db.get_blogs()})
 
 
 @login_required
@@ -61,7 +68,8 @@ def my_blogs(request):
     return render(
         request,
         'spudblog/my_blogs.html',
-        {'blogs': db.get_blogs(request.user.id), 'user_name': request.user.username})
+        {'blogs': db.get_blogs(request.user.id),
+         'user_name': request.user.username})
 
 
 ##### API

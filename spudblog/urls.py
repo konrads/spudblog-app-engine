@@ -5,7 +5,8 @@ import django.contrib.auth.views
 
 from spudblog import views
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     # UI view urls
     url(r'^$', django.contrib.auth.views.login,
         {'template_name': 'spudblog/login.html'}, name='login'),
@@ -19,5 +20,4 @@ urlpatterns = patterns('',
     # Lack of such is usfull for POST but not PUT and DELETE
     url(r'^api/full-blog/(?P<blog_id>\d+)$', views.full_blog),
     url(r'^api/blog(/(?P<blog_id>\d*))?$', views.blog),
-    url(r'^api/post(/(?P<post_id>\d*))?$', views.post),
-)
+    url(r'^api/post(/(?P<post_id>\d*))?$', views.post))

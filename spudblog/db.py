@@ -32,7 +32,9 @@ def get_full_blog(blog_id):
 
 ### Blog API
 def create_blog(user_id, blog):
-    new_blog = Blog(author_id=user_id, title=blog['title'], background=blog['background'])
+    new_blog = Blog(author_id=user_id,
+                    title=blog['title'],
+                    background=blog['background'])
     new_blog.save()
     return new_blog
 
@@ -58,7 +60,9 @@ def del_blog(blog_id):
 
 ### Post API
 def create_post(blog_id, post):
-    new_post = Post(blog_id=blog_id, title=post['title'], content=post['content'])
+    new_post = Post(blog_id=blog_id,
+                    title=post['title'],
+                    content=post['content'])
     new_post.save()
     return new_post
 
