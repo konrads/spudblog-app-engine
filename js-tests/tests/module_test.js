@@ -1,6 +1,5 @@
 'use strict';
 
-var user_id = 'u1';
 var user_name = 'john';
 
 describe('module', function() {
@@ -48,9 +47,8 @@ describe('module', function() {
 
 
   // Controllers tests
-  describe('Populate user_id and user_name', function() {
-    it('should populate $rootScope with user_id and user_name', function() {
-      expect($rootScope.user_id).toEqual(user_id);
+  describe('Populate user_name', function() {
+    it('should populate $rootScope with user_name', function() {
       expect($rootScope.user_name).toEqual(user_name);
     });
   });
