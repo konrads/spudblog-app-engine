@@ -46,7 +46,7 @@
                 <div ng-controller="BlogSummariesCtrl">
                     <ul class="nav nav-list" ng-repeat="b in blog_summaries">
                         <!-- getActiveClass() - bit of magic to set class='active' or '' for navbar -->
-                        <li ng-class="{active:isActive('/blog-view/'+b.id)}"><a href="#/blog-view/[[b.id]]">[[b.title]]</a></li>
+                        <li ng-class="{active:isActive('/blog-view/'+b.id)}"><a href="#/blog-view/[[b.id]]" ng-bind="b.title"></a></li>
                     </ul>
                 </div>
             </div>

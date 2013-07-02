@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     url(r'^api/all/$', views.all),
     # Allow for optional /blog_id or /post_id
     # Lack of such is usfull for POST but not PUT and DELETE
-    url(r'^api/full-blog(/(?P<blog_id>\d+))?$', views.full_blog),
+    url(r'^api/full-blog/(?P<blog_id>\d+)$', views.full_blog),
     url(r'^api/blog(/(?P<blog_id>\d*))?$', views.blog),
     url(r'^api/post(/(?P<post_id>\d*))?$', views.post),
 )

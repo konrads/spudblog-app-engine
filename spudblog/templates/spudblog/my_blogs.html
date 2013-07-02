@@ -7,9 +7,8 @@
     <title>Your blogs</title>
     <link href="/static/css/bootstrap.css" rel="stylesheet">
     <link href="/static/css/spudblog.css" rel="stylesheet">
-
     <script>
-    // server side population
+
     // server side population
     blog_summaries = [
     {% for b in blogs %}
@@ -77,7 +76,7 @@
     <div class="container-fluid max-height global-padding">
         <div class="row-fluid">
             <div class="span5 offset3" ng-controller="HeaderCtrl">
-                <h2>[[ user_name ]]'s blogs</h2>
+                <h2 ng-bind="user_name">'s blogs</h2>
             </div>
             <div class="span1 offset2">
                 <a href="/logout">Logout</a>
@@ -89,11 +88,10 @@
                     <div class="well" ng-show="blog_summaries.length">
                         <ul class="nav nav-list" ng-repeat="b in blog_summaries">
                             <!-- getActiveClass() - bit of magic to set class='active' or '' for navbar -->
-                            <li ng-class="{active:isActive('/blog-edit/'+b.id)}"><a href="#/blog-edit/[[b.id]]">[[b.title]]</a></li>
+                            <li ng-class="{active:isActive('/blog-edit/'+b.id)}"><a href="#/blog-edit/[[b.id]]" ng-bind="b.title"></a></li>
                         </ul>
                     </div>
                     <h4 ng-show="!blog_summaries.length">No blogs yet...</h4>
-                    <!-- FIXME: button needs better localization -->
                     </br></br>
                     <button class="btn btn-primary" ng-click="newBlog()">New Blog</button>
                 </div>

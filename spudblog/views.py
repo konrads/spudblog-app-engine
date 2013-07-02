@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import json
 import db
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def api_call(methods=None, needs_login=False):
@@ -35,7 +36,7 @@ def api_call(methods=None, needs_login=False):
             res = None
             try:
                 res = f(request, *args, **kwds)
-            except KeyError:
+            except (KeyError, ObjectDoesNotExist):
                 pass
             if not res:
                 return HttpResponseNotFound('Resource not found')
