@@ -1,4 +1,4 @@
-"""Persisntence abstraction.
+"""Persistence abstraction.
 
 Limits persistence interactions - all persisted data goes through this layer.
 """
