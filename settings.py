@@ -5,7 +5,7 @@ from djangoappengine.settings_base import *
 
 import os
 
-# Django settings for spudsite project.
+# Django settings for spudblog project.
 LOGIN_URL = '/'
 LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/my-blogs/'
